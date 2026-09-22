@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ROS2 / colcon
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Isaac Sim / generated assets
+*.usd.tmp
+*.log
+_isaac_sim/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

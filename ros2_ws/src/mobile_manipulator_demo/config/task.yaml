@@ -1,0 +1,12 @@
+task:
+  pick_frame: object
+  place_frame: drop_zone
+  pose_tolerance_m: 0.03
+  max_planning_time_s: 5.0
+  max_retries: 2
+
+robot:
+  base_frame: base_link
+  arm_group: manipulator
+  gripper_group: gripper
+
