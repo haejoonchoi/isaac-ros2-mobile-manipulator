@@ -1,77 +1,119 @@
-# Isaac Sim + ROS2 Mobile Manipulator
+# ROS 2 Mobile Robot Profiling Lab
 
-Portfolio project for a robotics role: a simulated mobile manipulator in NVIDIA Isaac Sim, controlled through ROS2 and MoveIt 2, performing a validated pick-and-place task.
+A simulation-first ROS 2 project that runs repeatable mobile-robot navigation tasks and provides the engineering tools needed to explain their behavior. The project combines meaningful C++ nodes, simulated sensors, controlled communication faults, automated evaluation, and a Qt diagnostic interface.
 
-## Goal
+> Status: specification and architecture phase. The repository currently contains an earlier Python pick-and-place state-machine scaffold; the Spec Kit plan defines its incremental replacement with the navigation profiling system described here.
 
-Demonstrate end-to-end robotics engineering skills:
+## Project goals
 
-- Build a mobile manipulator simulation scene in Isaac Sim.
-- Connect Isaac Sim to ROS2 through the ROS bridge.
-- Plan arm motion with MoveIt 2.
-- Coordinate base navigation, grasping, placement, and validation.
-- Publish repeatable tests and short demo media for reviewers.
+- Build ROS 2 C++ nodes with explicit lifecycle, timestamp, frame, and failure behavior.
+- Integrate one robot model in NVIDIA Isaac Sim with lidar, odometry, IMU, and TF data.
+- Execute repeatable Nav2 goals and recover cleanly from task or process failures.
+- Automate scenarios and record success rate, duration, sensor age, and selected latency metrics.
+- Inject delayed and missing sensor messages under controlled, recorded conditions.
+- Compare runs in a compact Qt diagnostic application.
+- Publish reproducible setup instructions while documenting sources of nondeterminism.
 
-## Target stack
+## Architecture
 
-| Area | Tooling |
+```mermaid
+flowchart LR
+	SIM[Isaac Sim<br/>robot and sensors] -->|scan, odom, imu, clock, tf| FI[Fault injector]
+	FI -->|healthy or impaired topics| NAV[Nav2]
+	NAV <-->|goal, feedback, result| RUN[Scenario runner]
+	RUN -->|run events| MET[Metrics collector]
+	FI -->|fault events| MET
+	NAV -->|navigation state| MET
+	SIM -->|ground truth and clock| MET
+	MET -->|live diagnostics| UI[Qt diagnostics]
+	MET -->|JSONL and summary CSV| ART[(Run artifacts)]
+	ART --> UI
+```
+
+All measurements use ROS time for simulation events and steady time for host-side elapsed durations. Every recorded value identifies its clock domain; values from different domains are never subtracted.
+
+## Planned stack
+
+| Area | Choice |
 | --- | --- |
-| Simulator | NVIDIA Isaac Sim |
-| Middleware | ROS2 Humble or Jazzy |
-| Motion planning | MoveIt 2 |
-| Robot model | URDF/Xacro plus Isaac USD scene |
-| Validation | Python unit tests, ROS2 launch tests, task-level metrics |
+| Platform | Ubuntu 24.04, ROS 2 Jazzy |
+| Simulator | NVIDIA Isaac Sim, pinned and documented after compatibility validation |
+| Navigation | Nav2 |
+| Robot and sensors | Differential-drive robot with lidar, odometry, IMU, TF, and simulation clock |
+| Application nodes | C++20 with `rclcpp`, lifecycle nodes where restart behavior matters |
+| Diagnostics | Qt 6 desktop application using ROS 2 subscriptions |
+| Run artifacts | Versioned JSONL events plus CSV summaries and scenario metadata |
+| Tests | `ament_cmake`, `ament_cmake_gtest`, `launch_testing`, and scenario smoke tests |
+
+## Evaluation contract
+
+Each run records:
+
+- scenario ID, seed when supported, configuration hash, and software versions;
+- terminal result and failure classification;
+- task duration using a monotonic host clock;
+- sensor message age and inter-arrival statistics;
+- navigation feedback and recovery events;
+- the active fault schedule and observed fault events.
+
+Aggregate reports show trial count, success rate, duration distribution, and healthy-versus-faulted comparisons. Results are reproducible within documented tolerances, not claimed to be bit-for-bit deterministic. GPU scheduling, simulator physics, middleware discovery, executor scheduling, and host load remain possible sources of variation.
+
+## Delivery roadmap
+
+1. **Navigation baseline**: robot model, sensors, frame tree, Nav2, and one successful goal.
+2. **Repeatable runner**: scenario schema, reset protocol, batch execution, and versioned artifacts.
+3. **Failure behavior**: delayed and dropped sensor streams, timeout handling, recovery, and restart tests.
+4. **Profiling UI**: live state/timing views and run-to-run comparisons in Qt.
+5. **Evidence package**: automated tests, architecture notes, debugging write-up, benchmark results, and demo media.
+
+Detailed acceptance criteria and implementation work live in [specs/001-navigation-profiling/spec.md](specs/001-navigation-profiling/spec.md), [specs/001-navigation-profiling/plan.md](specs/001-navigation-profiling/plan.md), and [specs/001-navigation-profiling/tasks.md](specs/001-navigation-profiling/tasks.md).
 
 ## Repository layout
 
 ```text
 .
-├── docs/                         # Design notes, milestones, demo checklist
-├── docker/                       # Optional ROS2 development container
-├── ros2_ws/
-│   └── src/
-│       └── mobile_manipulator_demo/
-│           ├── config/           # Task and robot configuration
-│           ├── launch/           # ROS2 launch files
-│           ├── mobile_manipulator_demo/
-│           │   └── task_state_machine.py
-│           ├── test/             # Validation tests
-│           ├── package.xml
-│           └── setup.py
-└── scripts/                      # Helper commands
+|-- .specify/                    # Spec Kit templates, scripts, and constitution
+|-- specs/001-navigation-profiling/
+|   |-- spec.md                  # User outcomes and acceptance criteria
+|   |-- plan.md                  # Technical implementation plan
+|   |-- research.md              # Decisions and alternatives
+|   |-- data-model.md            # Scenario and run artifact model
+|   |-- contracts/               # ROS and artifact contracts
+|   |-- quickstart.md            # Planned validation journey
+|   `-- tasks.md                 # Ordered implementation backlog
+|-- docs/                        # Architecture, milestones, and debugging notes
+|-- docker/                      # Reproducible development environment
+|-- ros2_ws/src/                 # ROS 2 packages
+`-- scripts/                     # Build, run, and validation automation
 ```
 
-## Milestones
+## Current smoke check
 
-1. **Simulation scene**: load mobile base, arm, table, objects, and cameras in Isaac Sim.
-2. **ROS2 bridge**: publish joint states, TF, odometry, camera, and command topics.
-3. **MoveIt 2 planning**: configure arm kinematics, planning scene, and collision objects.
-4. **Task executive**: sequence navigate, detect/object-pose input, pre-grasp, grasp, lift, place.
-5. **Validation**: assert task success, collision-free plans, final object pose tolerance, and repeatability.
-6. **Portfolio polish**: add architecture diagram, demo video/GIF, benchmark table, and short write-up.
-
-## Quick start
-
-From the repository root:
+The legacy state-machine tests can be run without ROS 2:
 
 ```powershell
-cd ros2_ws
-colcon build --symlink-install
-. install/setup.ps1
-ros2 launch mobile_manipulator_demo demo.launch.py
+Push-Location ros2_ws\src\mobile_manipulator_demo
+try { python -m unittest discover test } finally { Pop-Location }
 ```
 
-For a non-ROS smoke check of the task logic:
+On a configured ROS 2 machine:
 
 ```powershell
-python -m unittest discover ros2_ws\src\mobile_manipulator_demo\test
+.\scripts\run_validation.ps1
 ```
 
-## Public portfolio checklist
+The end-to-end simulator quickstart is intentionally tracked as planned work until the pinned Isaac Sim and ROS 2 environment has been validated.
 
-- Include a 60-90 second demo video in the README.
-- Show a task-success table with at least 20 trials.
-- Add screenshots of Isaac Sim, RViz/MoveIt, and the ROS graph.
-- Document failure modes and what you would improve next.
-- Keep hardware claims simulated unless tested on real hardware.
+## Spec-driven workflow
+
+This repository is initialized with GitHub Spec Kit. The project constitution is in [.specify/memory/constitution.md](.specify/memory/constitution.md). For future changes, evolve the specification first, then run the `speckit-plan`, `speckit-tasks`, `speckit-implement`, and `speckit-converge` skills. Keep completed feature artifacts as a living contract and reconcile them when implementation evidence changes an assumption.
+
+## Portfolio evidence target
+
+- Architecture and TF diagrams.
+- A 60-90 second demonstration of normal and faulted runs.
+- At least 20 trials per published scenario/configuration.
+- Healthy-versus-faulted comparison plots or tables.
+- A debugging write-up that follows one timing or frame issue from symptom to root cause.
+- Honest limitations, including simulator and hardware-transfer gaps.
 

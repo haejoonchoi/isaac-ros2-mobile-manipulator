@@ -4,7 +4,14 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-python -m unittest discover "$Workspace\src\mobile_manipulator_demo\test"
+$PackagePath = Join-Path $Workspace "src\mobile_manipulator_demo"
+Push-Location $PackagePath
+try {
+    python -m unittest discover test
+}
+finally {
+    Pop-Location
+}
 
 if (Get-Command colcon -ErrorAction SilentlyContinue) {
     Push-Location $Workspace

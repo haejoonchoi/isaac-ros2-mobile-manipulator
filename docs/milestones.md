@@ -1,43 +1,39 @@
-# Project milestones
+# Delivery milestones
 
-## M1: Simulation baseline
+The feature-level source of truth is `specs/001-navigation-profiling/`. These milestones summarize the review gates.
 
-- Create Isaac Sim scene with mobile base, manipulator, table, bin, and graspable cube.
-- Export or reference robot USD assets.
-- Verify joint limits and collision geometry.
+## M1: Navigation baseline
 
-## M2: ROS2 bridge
+- Pin the supported ROS 2, Isaac Sim, Nav2, and robot asset versions.
+- Spawn a differential-drive robot with lidar, odometry, IMU, simulation clock, and a documented TF tree.
+- Send one navigation goal through a C++ scenario runner and record its terminal result.
+- Gate: a fresh environment can execute the healthy scenario from documented commands.
 
-- Enable Isaac ROS bridge.
-- Publish `/joint_states`, `/tf`, odometry, and camera streams.
-- Subscribe to velocity and arm trajectory commands.
+## M2: Repeatable evaluation
 
-## M3: MoveIt 2 planning
+- Define scenario configuration and versioned run-artifact schemas.
+- Reset the world and robot between trials without stale state leaking into the next run.
+- Record success, failure class, task duration, sensor age, inter-arrival time, and recovery events.
+- Gate: a batch produces complete machine-readable artifacts and an aggregate report.
 
-- Add URDF/Xacro and SRDF.
-- Configure planning groups for arm and gripper.
-- Add planning-scene collision objects for table, bin, and cube.
+## M3: Controlled failures and recovery
 
-## M4: Pick-and-place executive
+- Add deterministic fault schedules for delayed and missing lidar messages.
+- Expose active faults and distinguish injected faults from infrastructure failures.
+- Implement bounded timeout, cancellation, cleanup, and restart behavior.
+- Gate: integration tests verify both expected failure and a successful subsequent clean run.
 
-- Implement the sequence:
-  1. Navigate to pick pose.
-  2. Move to pre-grasp.
-  3. Approach and close gripper.
-  4. Lift object.
-  5. Navigate to place pose.
-  6. Lower, release, and retreat.
+## M4: Qt diagnostics
 
-## M5: Validation
+- Show live run state, navigation state, sensor freshness, active faults, and recent events.
+- Load two completed runs and compare outcomes and timing distributions.
+- Gate: the UI remains responsive during a run and presents missing or partial data explicitly.
 
-- Add tests for task-state transitions.
-- Add launch/integration tests for ROS graph availability.
-- Record task metrics: success rate, planning time, final object-pose error, collisions.
+## M5: Evidence and reproducibility
 
-## M6: Portfolio presentation
-
-- Add demo video/GIF.
-- Add architecture diagram.
-- Add trial-results table.
-- Add concise engineering write-up: tradeoffs, failures, next steps.
+- Add unit, contract, launch, restart, and scenario-level tests.
+- Publish architecture and TF diagrams, benchmark tables, and demo media.
+- Write a root-cause debugging narrative based on captured evidence.
+- Document setup assumptions and nondeterminism sources without claiming perfect determinism.
+- Gate: execute the quickstart on a clean supported host and archive the resulting report.
 
