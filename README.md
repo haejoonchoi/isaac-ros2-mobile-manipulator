@@ -102,7 +102,17 @@ the pinned Isaac Sim and ROS 2 environment has been validated.
 
 ## Spec-driven workflow
 
-This repository is initialized with GitHub Spec Kit. The project constitution is in [.specify/memory/constitution.md](.specify/memory/constitution.md). For future changes, evolve the specification first, then run the `speckit-plan`, `speckit-tasks`, `speckit-implement`, and `speckit-converge` skills. Keep completed feature artifacts as a living contract and reconcile them when implementation evidence changes an assumption.
+This repository uses GitHub Spec Kit to keep engineering decisions, implementation work, and validation evidence connected. The project constitution in [.specify/memory/constitution.md](.specify/memory/constitution.md) defines the principles that every feature must satisfy.
+
+For a new feature, the development flow is:
+
+1. **Specify**: Describe the user outcomes, constraints, edge cases, and measurable acceptance criteria in `spec.md`. Use `speckit-clarify` when an important decision is underspecified.
+2. **Plan**: Use `speckit-plan` to research alternatives and record the technical approach, interfaces, structure, risks, and constitution checks in `plan.md` and its supporting design artifacts.
+3. **Task**: Use `speckit-tasks` to turn the design into a dependency-ordered backlog in `tasks.md`. Tasks should identify the affected files, user story, and validation scope.
+4. **Implement**: Use `speckit-implement` to execute the backlog in small increments. Behavior-focused tests are written first where required, then the implementation is added and validated at each checkpoint.
+5. **Analyze and converge**: Use `speckit-analyze` to check the specification, plan, and tasks for contradictions. Use `speckit-converge` after implementation evidence is available to append any remaining work to `tasks.md`.
+
+The feature artifacts are maintained as a living contract: `spec.md` explains what the system must achieve, `plan.md` explains how it will be built, and `tasks.md` records what remains to be done. When implementation or experiments change an assumption, update the relevant artifact and re-run the applicable analysis or convergence step rather than leaving the decision implicit in source code.
 
 ## Portfolio evidence target
 
