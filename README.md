@@ -2,7 +2,7 @@
 
 A simulation-first ROS 2 project that runs repeatable mobile-robot navigation tasks and provides the engineering tools needed to explain their behavior. The project combines meaningful C++ nodes, simulated sensors, controlled communication faults, automated evaluation, and a Qt diagnostic interface.
 
-> Status: specification and architecture phase. The repository currently contains an earlier Python pick-and-place state-machine scaffold; the Spec Kit plan defines its incremental replacement with the navigation profiling system described here.
+> Status: specification and architecture phase. The legacy Python pick-and-place scaffold has been removed; the Spec Kit plan now drives the incremental construction of the navigation profiling system described here.
 
 ## Project goals
 
@@ -87,22 +87,18 @@ Detailed acceptance criteria and implementation work live in [specs/001-navigati
 `-- scripts/                     # Build, run, and validation automation
 ```
 
-## Current smoke check
+## Current workspace check
 
-The legacy state-machine tests can be run without ROS 2:
-
-```powershell
-Push-Location ros2_ws\src\mobile_manipulator_demo
-try { python -m unittest discover test } finally { Pop-Location }
-```
-
-On a configured ROS 2 machine:
+The workspace now contains the four planned ROS 2 package skeletons. On a
+configured ROS 2 machine:
 
 ```powershell
 .\scripts\run_validation.ps1
 ```
 
-The end-to-end simulator quickstart is intentionally tracked as planned work until the pinned Isaac Sim and ROS 2 environment has been validated.
+The command currently validates package configuration and linting. The
+end-to-end simulator quickstart is intentionally tracked as planned work until
+the pinned Isaac Sim and ROS 2 environment has been validated.
 
 ## Spec-driven workflow
 
@@ -116,4 +112,3 @@ This repository is initialized with GitHub Spec Kit. The project constitution is
 - Healthy-versus-faulted comparison plots or tables.
 - A debugging write-up that follows one timing or frame issue from symptom to root cause.
 - Honest limitations, including simulator and hardware-transfer gaps.
-

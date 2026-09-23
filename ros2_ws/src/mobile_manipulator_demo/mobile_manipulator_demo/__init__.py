@@ -1,2 +1,0 @@
-"""Mobile manipulator demo package."""
-

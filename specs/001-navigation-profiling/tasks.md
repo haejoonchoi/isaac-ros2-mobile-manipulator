@@ -15,11 +15,11 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Preserve relevant lessons from the legacy package in `docs/legacy-baseline.md`, then remove `ros2_ws/src/mobile_manipulator_demo`
-- [ ] T002 Create package skeletons and manifests for `ros2_ws/src/robot_sim_bringup`, `ros2_ws/src/navigation_evaluation`, `ros2_ws/src/sensor_fault_injection`, and `ros2_ws/src/diagnostics_ui`
-- [ ] T003 [P] Add C++20 warning, formatting, and lint settings to each package `CMakeLists.txt` and repository validation scripts
-- [ ] T004 Record exact simulator, bridge, QoS, robot asset, GPU driver, ROS compatibility, and rosbag2-optional evidence findings in `specs/001-navigation-profiling/research.md`
-- [ ] T005 Update `docker/Dockerfile` with the dependencies validated by T004 and verify after T001 that no legacy package paths remain
+- [X] T001 Preserve relevant lessons from the legacy package in `docs/legacy-baseline.md`, then remove `ros2_ws/src/mobile_manipulator_demo`
+- [X] T002 Create package skeletons and manifests for `ros2_ws/src/robot_sim_bringup`, `ros2_ws/src/navigation_evaluation`, `ros2_ws/src/sensor_fault_injection`, and `ros2_ws/src/diagnostics_ui`
+- [X] T003 [P] Add C++20 warning, formatting, and lint settings to each package `CMakeLists.txt` and repository validation scripts
+- [X] T004 Record exact simulator, bridge, QoS, robot asset, GPU driver, ROS compatibility, and rosbag2-optional evidence findings in `specs/001-navigation-profiling/research.md`
+- [X] T005 Update `docker/Dockerfile` with the dependencies validated by T004 and verify after T001 that no legacy package paths remain
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 

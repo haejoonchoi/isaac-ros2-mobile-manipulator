@@ -10,6 +10,11 @@
 
 **Validation still required**: Pin an exact Isaac Sim release only after a smoke test confirms its ROS 2 Jazzy bridge, GPU driver, and robot asset compatibility.
 
+**Migration status**: The repository now targets native Ubuntu 24.04 as the
+primary runtime. Docker remains an optional development environment; its base
+image is aligned with ROS 2 Jazzy, but the image is not yet an Isaac Sim
+runtime and must not be treated as a compatibility validation result.
+
 ## Diagnostic Toolkit
 
 **Decision**: Use Qt 6 with ROS callbacks handled outside the GUI thread.

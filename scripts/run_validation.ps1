@@ -4,19 +4,11 @@ param(
 
 $ErrorActionPreference = "Stop"
 
-$PackagePath = Join-Path $Workspace "src\mobile_manipulator_demo"
-Push-Location $PackagePath
-try {
-    python -m unittest discover test
-}
-finally {
-    Pop-Location
-}
-
 if (Get-Command colcon -ErrorAction SilentlyContinue) {
     Push-Location $Workspace
     try {
-        colcon test --packages-select mobile_manipulator_demo
+        colcon build --symlink-install
+        colcon test
         colcon test-result --verbose
     }
     finally {
@@ -24,6 +16,5 @@ if (Get-Command colcon -ErrorAction SilentlyContinue) {
     }
 }
 else {
-    Write-Host "colcon not found; skipped ROS2 package tests."
+    throw "colcon is required for ROS 2 validation but was not found on PATH."
 }
-
