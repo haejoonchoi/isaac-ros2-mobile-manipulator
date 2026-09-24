@@ -1,4 +1,8 @@
-# Tasks: Navigation Profiling and Evaluation
+# Tasks: Navigation Profiling and Evaluation (Superseded)
+
+> These tasks are retained for historical reference only. They are superseded
+> by the Gazebo feature at `specs/002-gazebo-integration/`. Do not resume or
+> implement this task list.
 
 **Input**: Design documents from `/specs/001-navigation-profiling/`
 

@@ -1,5 +1,9 @@
 # Specification Quality Checklist: Navigation Profiling and Evaluation
 
+> **Superseded**: This checklist belongs to the retired Isaac Sim feature.
+> The active specification is
+> [002-gazebo-integration](../../002-gazebo-integration/spec.md).
+
 **Purpose**: Validate requirement completeness before implementation planning
 
 **Created**: 2026-09-21

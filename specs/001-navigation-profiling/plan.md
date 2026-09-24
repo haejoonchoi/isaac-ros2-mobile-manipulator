@@ -1,8 +1,12 @@
-# Implementation Plan: Navigation Profiling and Evaluation
+# Implementation Plan: Navigation Profiling and Evaluation (Superseded)
 
 **Branch**: `001-navigation-profiling` | **Date**: 2026-09-21 | **Spec**: [spec.md](spec.md)
 
 **Input**: Feature specification from `/specs/001-navigation-profiling/spec.md`
+
+> This plan is retained for historical reference only. It is superseded by
+> `specs/002-gazebo-integration/` and must not be used to implement the
+> project. The active simulator direction is Gazebo.
 
 ## Summary
 

@@ -4,7 +4,12 @@
 
 **Created**: 2026-09-21
 
-**Status**: Draft
+**Status**: Superseded by [002-gazebo-integration](../002-gazebo-integration/spec.md)
+
+> This Isaac Sim specification is retained as historical context. The project
+> direction has moved to Gazebo because the available hardware cannot run
+> Isaac Sim reliably. Do not use this feature for new planning or
+> implementation work.
 
 **Input**: Build a ROS 2 mobile-robot simulation with navigation tasks, automated profiling, controlled sensor failures, recovery behavior, and a Qt diagnostic interface.
 
