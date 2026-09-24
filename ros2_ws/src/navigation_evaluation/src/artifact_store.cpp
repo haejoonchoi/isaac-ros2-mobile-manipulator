@@ -50,11 +50,13 @@ ArtifactStore::ArtifactStore(std::filesystem::path root, std::string batch_id, s
 
 void ArtifactStore::create_partial_run(const RunMetadata &metadata)
 {
-  if (metadata.run_id.empty() || metadata.scenario_id.empty()) {
-    throw std::invalid_argument("run_id and scenario_id are required");
+  if (metadata.run_id.empty() || metadata.scenario_id.empty() || metadata.profile_id.empty() ||
+      metadata.created_at_clock_domain.empty()) {
+    throw std::invalid_argument(
+      "run_id, scenario_id, profile_id, and created_at clock domain are required");
   }
   std::filesystem::create_directories(run_path_.parent_path());
-  run_record_["schema_version"] = "1.0.0";
+  run_record_["schema_version"] = 1;
   run_record_["run_id"] = metadata.run_id;
   if (metadata.batch_id) {
     run_record_["batch_id"] = *metadata.batch_id;
@@ -63,6 +65,11 @@ void ArtifactStore::create_partial_run(const RunMetadata &metadata)
   }
   run_record_["scenario_id"] = metadata.scenario_id;
   run_record_["configuration_hash"] = metadata.configuration_hash;
+  run_record_["profile_id"] = metadata.profile_id;
+  run_record_["created_at"]["value"] = metadata.created_at;
+  run_record_["created_at"]["clock_domain"] = metadata.created_at_clock_domain;
+  run_record_["created_at"]["segment"] = Json::UInt64(metadata.clock_segment);
+  run_record_["clock_segment"] = Json::UInt64(metadata.clock_segment);
   run_record_["environment"] = metadata.environment;
   run_record_["artifact_state"] = "partial";
   run_record_["events_file"] = "events.jsonl";
@@ -71,22 +78,31 @@ void ArtifactStore::create_partial_run(const RunMetadata &metadata)
 
 void ArtifactStore::append_event(const RunEvent &event)
 {
-  if (event.run_id.empty() || event.event_type.empty() || event.clock_domain.empty()) {
-    throw std::invalid_argument("run event requires identity, type, and clock domain");
+  if (event.run_id.empty() || event.event_id.empty() || event.event_type.empty() ||
+      event.clock_domain.empty() || event.source.empty()) {
+    throw std::invalid_argument(
+      "run event requires run, event, type, clock-domain, and source identity");
+  }
+  if (event_ids_.contains(event.event_id)) {
+    throw std::invalid_argument("duplicate event_id: " + event.event_id);
   }
   std::ofstream output(events_path_, std::ios::app);
   if (!output) {
     throw std::runtime_error("Unable to open event artifact: " + events_path_.string());
   }
   Json::Value value(Json::objectValue);
+  value["schema_version"] = 1;
   value["run_id"] = event.run_id;
+  value["event_id"] = event.event_id;
   value["sequence"] = Json::UInt64(event.sequence);
   value["event_type"] = event.event_type;
-  value["observed_at"]["value"] = event.observed_at;
-  value["observed_at"]["clock_domain"] = event.clock_domain;
+  value["sample_time"]["value"] = event.observed_at;
+  value["sample_time"]["clock_domain"] = event.clock_domain;
+  value["sample_time"]["segment"] = Json::UInt64(event.clock_segment);
   value["source"] = event.source;
   value["payload"] = event.payload;
   output << render_json(value) << '\n';
+  event_ids_.insert(event.event_id);
 }
 
 void ArtifactStore::complete_run(

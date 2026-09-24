@@ -2,7 +2,7 @@
 <package format="3">
   <name>robot_sim_bringup</name>
   <version>0.1.0</version>
-  <description>Isaac Sim robot, sensor, localization, and Nav2 bringup.</description>
+  <description>Gazebo Harmonic robot, sensor, localization, and Nav2 bringup.</description>
   <maintainer email="you@example.com">Project Maintainers</maintainer>
   <license>MIT</license>
 

@@ -1,8 +1,13 @@
 # Research: Navigation Profiling and Evaluation
 
+> **Superseded**: This research records the abandoned Isaac Sim direction.
+> The project now uses the Gazebo feature in
+> `../002-gazebo-integration/spec.md`; new compatibility research belongs
+> there.
+
 ## Simulator and Platform
 
-**Decision**: Use NVIDIA Isaac Sim as the only simulator and ROS 2 Jazzy on Ubuntu 24.04.
+**Historical decision**: Use NVIDIA Isaac Sim as the only simulator and ROS 2 Jazzy on Ubuntu 24.04.
 
 **Rationale**: The repository and intended portfolio direction already target Isaac Sim. Restricting the first release to one simulator keeps bridge, timing, reset, and sensor semantics testable.
 

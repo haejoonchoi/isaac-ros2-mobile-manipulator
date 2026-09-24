@@ -1,4 +1,8 @@
-# Quickstart Validation: Navigation Profiling and Evaluation
+# Quickstart Validation: Navigation Profiling and Evaluation (Superseded)
+
+> This quickstart documents the abandoned Isaac Sim direction and is retained
+> for historical reference. Use the active Gazebo feature at
+> `../002-gazebo-integration/` for new setup instructions.
 
 This is the target clean-host validation journey. Commands become executable as their corresponding tasks land; until then, the README labels the end-to-end setup as planned.
 

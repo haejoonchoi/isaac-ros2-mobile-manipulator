@@ -1,3 +1,14 @@
+<!--
+Sync Impact Report
+- Version change: 1.0.0 -> 1.1.0
+- Modified principles: Engineering Constraints, simulator scope updated from
+  Isaac Sim-only to Gazebo-only for the active project direction
+- Added sections: none
+- Removed sections: none
+- Follow-up TODOs: validate the exact Gazebo release and ROS 2 Jazzy
+  compatibility during feature research
+-->
+
 # ROS 2 Mobile Robot Profiling Lab Constitution
 
 ## Core Principles
@@ -25,7 +36,12 @@ Supported versions, scenario inputs, seeds when available, configuration hashes,
 ## Engineering Constraints
 
 - Production ROS 2 application nodes MUST be C++20 and use standard ROS 2 and Nav2 interfaces directly.
-- NVIDIA Isaac Sim is the only simulator in the initial scope; a second simulator requires a new specification.
+- Gazebo is the only simulator in the active project scope. Isaac Sim is
+  superseded and must not be introduced into active implementation work without
+  a new approved specification.
+- The active simulator integration MUST support the constrained-hardware
+  execution profile defined by the current feature specification, including a
+  documented headless or low-resource mode where applicable.
 - The diagnostic desktop application MUST use Qt 6 and consume the same documented ROS and artifact contracts as automated tools.
 - Run artifacts MUST use versioned, machine-readable formats and remain inspectable without the UI.
 - Abstractions MUST solve a demonstrated boundary or duplication problem; speculative framework layers are prohibited.
@@ -45,4 +61,4 @@ Reviews MUST reject undocumented ROS contracts, mixed clock arithmetic, unbounde
 
 This constitution governs specifications, plans, tasks, implementation, and review. Amendments require a documented rationale, an impact assessment for active specifications, and a version change following semantic versioning. Compliance MUST be checked during planning and convergence; justified exceptions MUST be recorded in the plan's Complexity Tracking section.
 
-**Version**: 1.0.0 | **Ratified**: 2026-09-21 | **Last Amended**: 2026-09-21
+**Version**: 1.1.0 | **Ratified**: 2026-09-21 | **Last Amended**: 2026-09-23

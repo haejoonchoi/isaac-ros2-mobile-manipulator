@@ -1,10 +1,10 @@
 # Delivery milestones
 
-The feature-level source of truth is `specs/001-navigation-profiling/`. These milestones summarize the review gates.
+The feature-level source of truth is `specs/002-gazebo-integration/`. The 001 navigation-profiling artifacts are historical background. These milestones summarize the review gates.
 
 ## M1: Navigation baseline
 
-- Pin the supported ROS 2, Isaac Sim, Nav2, and robot asset versions.
+- Pin the supported ROS 2, Gazebo Harmonic, Nav2, and robot asset versions.
 - Spawn a differential-drive robot with lidar, odometry, IMU, simulation clock, and a documented TF tree.
 - Send one navigation goal through a C++ scenario runner and record its terminal result.
 - Gate: a fresh environment can execute the healthy scenario from documented commands.

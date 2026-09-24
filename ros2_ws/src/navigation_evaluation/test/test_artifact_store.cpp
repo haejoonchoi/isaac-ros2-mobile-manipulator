@@ -15,6 +15,10 @@ TEST(ArtifactStore, WritesPartialAndCompleteRunRecords)
   metadata.batch_id = "batch-1";
   metadata.scenario_id = "healthy";
   metadata.configuration_hash = "abc";
+  metadata.profile_id = "headless-low-resource";
+  metadata.created_at = 10.0;
+  metadata.created_at_clock_domain = "ros_sim";
+  metadata.clock_segment = 2;
   store.create_partial_run(metadata);
 
   std::ifstream partial(store.run_path());
@@ -24,10 +28,12 @@ TEST(ArtifactStore, WritesPartialAndCompleteRunRecords)
 
   navigation_evaluation::RunEvent event;
   event.run_id = "run-1";
+  event.event_id = "event-1";
   event.sequence = 1;
   event.event_type = "run.lifecycle";
   event.observed_at = 12.5;
   event.clock_domain = "steady";
+  event.clock_segment = 2;
   event.source = "test";
   store.append_event(event);
   store.complete_run("succeeded", std::nullopt, 1250);
@@ -38,7 +44,12 @@ TEST(ArtifactStore, WritesPartialAndCompleteRunRecords)
   EXPECT_EQ(complete_record["artifact_state"].asString(), "complete");
   EXPECT_EQ(complete_record["terminal_status"].asString(), "succeeded");
   EXPECT_EQ(complete_record["duration_ms"].asInt64(), 1250);
-  EXPECT_EQ(store.read_complete_events(store.events_path()).size(), 1U);
+  EXPECT_EQ(complete_record["profile_id"].asString(), "headless-low-resource");
+  EXPECT_EQ(complete_record["created_at"]["segment"].asUInt64(), 2U);
+  const auto events = store.read_complete_events(store.events_path());
+  ASSERT_EQ(events.size(), 1U);
+  EXPECT_EQ(events.front()["event_id"].asString(), "event-1");
+  EXPECT_EQ(events.front()["sample_time"]["segment"].asUInt64(), 2U);
 
   std::filesystem::remove_all(root);
 }

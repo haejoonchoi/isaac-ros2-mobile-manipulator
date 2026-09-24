@@ -7,7 +7,7 @@ A simulation-first ROS 2 project that runs repeatable mobile-robot navigation ta
 ## Project goals
 
 - Build ROS 2 C++ nodes with explicit lifecycle, timestamp, frame, and failure behavior.
-- Integrate one robot model in NVIDIA Isaac Sim with lidar, odometry, IMU, and TF data.
+- Integrate one robot model in Gazebo Harmonic with lidar, odometry, IMU, and TF data.
 - Execute repeatable Nav2 goals and recover cleanly from task or process failures.
 - Automate scenarios and record success rate, duration, sensor age, and selected latency metrics.
 - Inject delayed and missing sensor messages under controlled, recorded conditions.
@@ -18,7 +18,7 @@ A simulation-first ROS 2 project that runs repeatable mobile-robot navigation ta
 
 ```mermaid
 flowchart LR
-	SIM[Isaac Sim<br/>robot and sensors] -->|scan, odom, imu, clock, tf| FI[Fault injector]
+	SIM[Gazebo Harmonic<br/>robot and sensors] -->|scan, odom, imu, clock, tf| FI[Fault injector]
 	FI -->|healthy or impaired topics| NAV[Nav2]
 	NAV <-->|goal, feedback, result| RUN[Scenario runner]
 	RUN -->|run events| MET[Metrics collector]
@@ -37,7 +37,7 @@ All measurements use ROS time for simulation events and steady time for host-sid
 | Area | Choice |
 | --- | --- |
 | Platform | Ubuntu 24.04, ROS 2 Jazzy |
-| Simulator | NVIDIA Isaac Sim, pinned and documented after compatibility validation |
+| Simulator | Gazebo Harmonic, pinned and documented for ROS 2 Jazzy |
 | Navigation | Nav2 |
 | Robot and sensors | Differential-drive robot with lidar, odometry, IMU, TF, and simulation clock |
 | Application nodes | C++20 with `rclcpp`, lifecycle nodes where restart behavior matters |
@@ -66,14 +66,14 @@ Aggregate reports show trial count, success rate, duration distribution, and hea
 4. **Profiling UI**: live state/timing views and run-to-run comparisons in Qt.
 5. **Evidence package**: automated tests, architecture notes, debugging write-up, benchmark results, and demo media.
 
-Detailed acceptance criteria and implementation work live in [specs/001-navigation-profiling/spec.md](specs/001-navigation-profiling/spec.md), [specs/001-navigation-profiling/plan.md](specs/001-navigation-profiling/plan.md), and [specs/001-navigation-profiling/tasks.md](specs/001-navigation-profiling/tasks.md).
+Detailed acceptance criteria and implementation work live in [specs/002-gazebo-integration/spec.md](specs/002-gazebo-integration/spec.md), [specs/002-gazebo-integration/plan.md](specs/002-gazebo-integration/plan.md), and [specs/002-gazebo-integration/tasks.md](specs/002-gazebo-integration/tasks.md). The 001 navigation-profiling artifacts are retained as historical background.
 
 ## Repository layout
 
 ```text
 .
 |-- .specify/                    # Spec Kit templates, scripts, and constitution
-|-- specs/001-navigation-profiling/
+|-- specs/002-gazebo-integration/
 |   |-- spec.md                  # User outcomes and acceptance criteria
 |   |-- plan.md                  # Technical implementation plan
 |   |-- research.md              # Decisions and alternatives
@@ -98,7 +98,7 @@ configured ROS 2 machine:
 
 The command currently validates package configuration and linting. The
 end-to-end simulator quickstart is intentionally tracked as planned work until
-the pinned Isaac Sim and ROS 2 environment has been validated.
+the pinned Gazebo Harmonic and ROS 2 environment has been validated.
 
 ## Spec-driven workflow
 
