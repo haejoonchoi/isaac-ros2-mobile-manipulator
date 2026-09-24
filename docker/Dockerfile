@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     ros-jazzy-nav2-bringup \
     ros-jazzy-tf2-tools \
     ros-jazzy-rviz2 \
+    libjsoncpp-dev \
     qt6-base-dev \
     && rm -rf /var/lib/apt/lists/*
 

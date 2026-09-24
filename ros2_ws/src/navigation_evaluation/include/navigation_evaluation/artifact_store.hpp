@@ -1,0 +1,57 @@
+#pragma once
+
+#include <json/json.h>
+
+#include <filesystem>
+#include <optional>
+#include <string>
+#include <vector>
+
+namespace navigation_evaluation {
+
+struct RunMetadata
+{
+  std::string run_id;
+  std::optional<std::string> batch_id;
+  std::string scenario_id;
+  std::string configuration_hash;
+  Json::Value environment{Json::objectValue};
+};
+
+struct RunEvent
+{
+  std::string run_id;
+  std::uint64_t sequence{0};
+  std::string event_type;
+  double observed_at{0.0};
+  std::string clock_domain;
+  std::string source;
+  Json::Value payload{Json::objectValue};
+};
+
+class ArtifactStore
+{
+public:
+  ArtifactStore(std::filesystem::path root, std::string batch_id, std::string run_id);
+
+  void create_partial_run(const RunMetadata &metadata);
+  void append_event(const RunEvent &event);
+  void complete_run(
+    const std::string &terminal_status,
+    std::optional<std::string> failure_class,
+    std::optional<std::int64_t> duration_ms);
+
+  [[nodiscard]] const std::filesystem::path &run_path() const noexcept { return run_path_; }
+  [[nodiscard]] const std::filesystem::path &events_path() const noexcept { return events_path_; }
+
+  static std::vector<Json::Value> read_complete_events(const std::filesystem::path &events_path);
+
+private:
+  void write_run_record(const Json::Value &record) const;
+
+  std::filesystem::path run_path_;
+  std::filesystem::path events_path_;
+  Json::Value run_record_{Json::objectValue};
+};
+
+}  // namespace navigation_evaluation

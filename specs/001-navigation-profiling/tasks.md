@@ -23,11 +23,11 @@
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-- [ ] T006 [P] Add versioned YAML fixture and naming-rule tests in `ros2_ws/src/navigation_evaluation/config/scenarios` and `ros2_ws/src/navigation_evaluation/test/test_scenario_schema.cpp`
+- [X] T006 [P] Add versioned YAML fixture and naming-rule tests in `ros2_ws/src/navigation_evaluation/config/scenarios` and `ros2_ws/src/navigation_evaluation/test/test_scenario_schema.cpp`
 - [ ] T007 [P] Add artifact fixtures and failing parser/writer tests for atomic records, partial JSONL, hashing, and every required event category in `ros2_ws/src/navigation_evaluation/test/test_artifact_store.cpp`
 - [ ] T008 [P] Add metric clock-domain and aggregation tests in `ros2_ws/src/navigation_evaluation/test/test_metrics.cpp`
-- [ ] T009 Implement scenario model and validation in `ros2_ws/src/navigation_evaluation/include/navigation_evaluation/scenario.hpp` and `ros2_ws/src/navigation_evaluation/src/scenario.cpp`
-- [ ] T010 Implement partial-safe artifact storage in `ros2_ws/src/navigation_evaluation/include/navigation_evaluation/artifact_store.hpp` and `ros2_ws/src/navigation_evaluation/src/artifact_store.cpp`
+- [X] T009 Implement scenario model and validation in `ros2_ws/src/navigation_evaluation/include/navigation_evaluation/scenario.hpp` and `ros2_ws/src/navigation_evaluation/src/scenario.cpp`
+- [X] T010 Implement partial-safe artifact storage in `ros2_ws/src/navigation_evaluation/include/navigation_evaluation/artifact_store.hpp` and `ros2_ws/src/navigation_evaluation/src/artifact_store.cpp`
 - [ ] T011 Implement typed metric and aggregate logic in `ros2_ws/src/navigation_evaluation/include/navigation_evaluation/metrics.hpp` and `ros2_ws/src/navigation_evaluation/src/metrics.cpp`
 - [ ] T012 [P] Create the robot URDF/Xacro, sensor configuration, and frame diagram in `ros2_ws/src/robot_sim_bringup/urdf`, `ros2_ws/src/robot_sim_bringup/config`, and `docs/frames.md`
 - [ ] T013 [P] Create the Isaac Sim world and versioned asset manifest in `ros2_ws/src/robot_sim_bringup/worlds` and `ros2_ws/src/robot_sim_bringup/config/assets.yaml`
